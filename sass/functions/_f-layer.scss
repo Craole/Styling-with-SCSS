@@ -1,0 +1,14 @@
+@use 'sass:map';
+@use "../constants"as *;
+// https: //www.sitepoint.com/using-sass-maps/
+
+//doc-> Set layer depth
+@function layer($key) {
+  @if map.has-key($z-layers, $key) {
+    @return map.get($z-layers, $key);
+  }
+
+  @else {
+    @error 'That size was not found in $sizes!';
+  }
+}

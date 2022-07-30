@@ -1,0 +1,108 @@
+// >>= ====================================================== =<< //
+// >>= BASE
+// >>= ====================================================== =<< //
+// @use "../functions/converter"as *;
+
+// $font-family-base: rem(16);
+// $font-size-base: $base-pixel-size;
+// $font-weight-base: rem(16);
+// $line-height-base: rem(16);
+// $type-scale: f,rem(16);
+
+
+// >>= ====================================================== =<< //
+// >>= WEIGHT
+// >>= ====================================================== =<< //
+
+$font-weights: ( //@ Font Weights
+  'hairline': 100,
+  'xlight': 200,
+  'light': 300,
+  'normal': 400,
+  'medium': 500,
+  'semi': 600,
+  'bold': 700,
+  'xbold': 800,
+  'heavy': 900,
+);
+
+// $fw-100: fs(2xs);
+// $fs-big: fs(#{$9xl});
+
+// >>= ====================================================== =<< //
+// >>= FAMILY
+// >>= ====================================================== =<< //
+
+//| Display
+$font-display-1: 'Big Shoulders Stencil Display',
+cursive;
+$font-display-2: 'Big Shoulders Display',
+cursive;
+$font-display-3: 'Expletus Sans',
+cursive;
+$font-display-4: 'Tourney',
+cursive;
+
+//| Handwriting
+$font-handwriting-1: 'Lavishly Yours',
+cursive;
+$font-handwriting-2: 'Love Light',
+cursive;
+$font-handwriting-3: 'The Nautigal',
+cursive;
+$font-handwriting-4: 'Updock',
+cursive;
+
+//| Monospace
+$font-monospace-1: 'Fira Code',
+monospace;
+$font-monospace-2: 'JetBrains Mono',
+monospace;
+
+//| Serif
+$font-serif-1: 'Noto Serif',
+serif;
+$font-serif-2: 'Playfair Display',
+serif;
+
+//| Sans-Serif
+$font-sans-1: 'Poppins',
+sans-serif;
+$font-sans-2: 'Montserrat',
+sans-serif;
+
+//| Defaults
+$ff-heading: $font-display-1;
+$ff-fancy: $font-handwriting-1;
+$ff-code: $font-monospace-1;
+$ff-sans: $font-sans-1;
+$ff-serif: $font-serif-1;
+
+// >>= ====================================================== =<< //
+// >>= STYLES
+// >>= ====================================================== =<< //
+
+h1,
+h2,
+h3 {
+  font-family: $font-serif-2;
+}
+
+h1 {
+  font-size: clamp(rem(28), rem(16) + 2vw, rem(40));
+}
+
+h2 {
+  font-size: clamp(rem(22), rem(14) + 1.5vw, rem(36));
+}
+
+p {
+  margin-top: 0;
+  font-size: rem(16);
+}
+
+a,
+a:visited,
+a:active {
+  text-decoration: none;
+}

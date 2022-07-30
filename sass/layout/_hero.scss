@@ -1,0 +1,38 @@
+@use '../functions/'as *;
+
+#hero {
+  background-color: #27262e;
+  color: teal;
+  // height: 100%;
+
+  section {
+    display: grid;
+    // grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    // gap: 1em;
+    height: 100%;
+  }
+
+  article {
+    display: grid;
+    place-items: center;
+    height: 100%;
+
+    font-size: fs('6xl');
+
+    &#dev {
+      color: red;
+    }
+
+    &#art {
+      color: yellow;
+    }
+
+    &#efl {
+      color: green;
+    }
+
+    &#biz {
+      color: purple;
+    }
+  }
+}

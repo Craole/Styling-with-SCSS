@@ -1,0 +1,8 @@
+@use "../constants"as *;
+
+@each $size-name,
+$size-value in $font-weights {
+  .fw-#{$size-name} {
+    font-weight: $size-value;
+  }
+}

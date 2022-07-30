@@ -1,0 +1,110 @@
+/* Styles for the hero image */
+aside {
+  /* background: url('https://images.unsplash.com/photo-1518176258769-f227c798150e') center;
+  background-size: cover; */
+
+  z-index: -1;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: var(--overlay-dark-1);
+
+  /* padding: 4rem 2rem; */
+  /* grid styles */
+  /* display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  align-items: center; */
+}
+
+section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 1em;
+  height: 100%;
+}
+
+article {
+  /* background-color: var(--color-dark-1);
+  color: var(--overlay-dark-1);
+  font-family: var(--font-display-1);
+  font-size: calc(var(--font-multiplier) * 4);
+  font-weight: 900; */
+  color: var(--color-accent-1);
+
+  display: grid;
+  place-items: center;
+}
+
+article:hover {
+  color: red;
+}
+
+@media screen and (min-width: 576px) {
+  article {
+    background-color: var(--color-accent-1);
+  }
+}
+
+/* @@@@@@@@@@@@@@@@@@@@@@@@@@ */
+
+/* breweries styles */
+.breweries {
+  padding: 2rem;
+}
+
+.breweries > ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-gap: 1rem;
+}
+
+.breweries > ul > li {
+  border: 1px solid #e2e2e2;
+  border-radius: 0.5rem;
+}
+
+.breweries > ul > li > figure {
+  max-height: 220px;
+  overflow: hidden;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  position: relative;
+}
+
+.breweries > ul > li > figure > img {
+  width: 100%;
+}
+
+.breweries > ul > li > figure > figcaption {
+  position: absolute;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  width: 100%;
+}
+
+.breweries > ul > li > figure > figcaption > h3 {
+  color: white;
+  padding: 0.75rem;
+  font-size: 1.25rem;
+}
+
+.breweries > ul > li > p {
+  font-size: 1rem;
+  line-height: 1.5;
+  padding: 1rem 0.75rem;
+  color: #666666;
+}
+
+.breweries > ul > li > a {
+  padding: 0.5rem 1rem;
+  margin: 0.5rem;
+}
+
+/* footer */
+footer {
+  background-color: #333;
+  padding: 0.75rem;
+  color: white;
+  text-align: center;
+  font-size: 0.75rem;
+}

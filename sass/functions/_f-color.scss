@@ -1,0 +1,65 @@
+@use "../constants/colors"as *;
+
+//doc-> Generate color palette based on selected color.
+@function color($color, $shade) {
+  @if map.has-key($colors, $color, $shade) {
+    @return map.get($colors, $color, $shade);
+  }
+
+  @else {
+    @error 'That color was not found in $colors!';
+  }
+}
+
+//doc-> Lighten a $color by mixing it with white as specified by $percentage.
+@function tint($color, $percentage) {
+  @return mix(white, $color, $percentage);
+}
+
+//doc-> Darken a $color by mixing it with black as specified by $percentage.
+@function shade($color, $percentage) {
+  @return mix(black, $color, $percentage);
+}
+
+//doc-> Generate color palette based on selected color.
+@function colorPalette($color) {
+$palette: ( //@ Palette
+    50: mix(white, $color, 88%),
+    100: mix(white, $color, 70%),
+    200: mix(white, $color, 50%),
+    300: mix(white, $color, 30%),
+    400: mix(white, $color, 15%),
+    500: mix(white, $color, 0%),
+    600: mix(black, $color, 13%),
+    700: mix(black, $color, 30%),
+    800: mix(black, $color, 46%),
+    900: mix(black, $color, 75%),
+    A100: lighten(saturate(mix(black, $color, 15%), 80%), 45.6%),
+    A200: lighten(saturate(mix(black, $color, 15%), 80%), 35.6%),
+    A400: lighten(saturate(mix(black, $color, 15%), 100%), 25.6%),
+    A700: lighten(saturate(mix(black, $color, 15%), 100%), 20.5%));
+    @return $palette;
+}
+
+
+// @function colorPalette($color) {
+//   $light: #fff;
+//   $dark: multiply($color, $color);
+//   $tetrad: tetrad($color);
+//   $palette: ( //@ Palette
+//       50: mix($light, $color, 88%),
+//       100: mix($light, $color, 70%),
+//       200: mix($light, $color, 50%),
+//       300: mix($light, $color, 30%),
+//       400: mix($light, $color, 15%),
+//       500: mix($light, $color, 0%),
+//       600: mix($dark, $color, 13%),
+//       700: mix($dark, $color, 30%),
+//       800: mix($dark, $color, 46%),
+//       900: mix($dark, $color, 75%),
+//       A100: lighten(saturate(mix($dark, $color, 15%), 80%), 45.6%),
+//       A200: lighten(saturate(mix($dark, $color, 15%), 80%), 35.6%),
+//       A400: lighten(saturate(mix($dark, $color, 15%), 100%), 25.6%),
+//       A700: lighten(saturate(mix($dark, $color, 15%), 100%), 20.5%));
+//       @return $palette;
+// }

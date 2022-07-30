@@ -1,0 +1,35 @@
+@use 'sass:map';
+@use "../constants"as *;
+
+//doc-> Generate sizes
+@function size($size) {
+  @if map.has-key($sizes, $size) {
+    @return map.get($sizes, $size);
+  }
+
+  @else {
+    @error 'That size was not found in $sizes!';
+  }
+}
+
+//doc-> Generate font sizes
+@function fs($font-size) {
+  @if map.has-key($font-sizes, $font-size) {
+    @return map.get($font-sizes, $font-size);
+  }
+
+  @else {
+    @error 'That size was not found in $font-sizes!';
+  }
+}
+
+//doc-> Generate Screen sizes
+@function ss($screen-size) {
+  @if map.has-key($screen-sizes, $screen-size) {
+    @return map.get($screen-sizes, $screen-size);
+  }
+
+  @else {
+    @error 'That screen size was not found in $font-sizes!';
+  }
+}

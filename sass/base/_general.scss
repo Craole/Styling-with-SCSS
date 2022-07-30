@@ -1,0 +1,5 @@
+@use '../functions'as *;
+
+$color-light: rgb(146, 49, 165);
+$color-dark: shade($color-light, 92);
+$padding: em(10);

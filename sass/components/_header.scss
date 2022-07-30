@@ -1,0 +1,56 @@
+@use '../functions'as *;
+@use '../base'as *;
+
+header {
+  background-color: $color-dark;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: $padding;
+  place-items: center;
+
+  * {
+    cursor: pointer;
+    color: $color-light;
+    padding: $padding;
+  }
+
+  #logo {
+    font-size: fs('4xl');
+    transition: all 0.3s ease 0s;
+
+    &:hover {
+      color: $color-dark;
+      background-color: $color-light;
+    }
+  }
+
+  h1 {
+    font-size: fs('4xl');
+  }
+
+  button {
+    color: $color-dark;
+    background-color: $color-light;
+    border: none;
+
+    &:hover {
+      color: $color-light;
+      background-color: $color-dark;
+    }
+  }
+
+  nav {
+    display: none;
+
+    // @include respond-to(md) {
+      @include mq(md) {
+      background-color: tomato;
+      display: grid;
+    }
+  }
+}
+
+@debug ss('md');
+@debug fs('base');
+@debug layer('overlay');
+@debug layer('bottomless-pit');
