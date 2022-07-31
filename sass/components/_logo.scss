@@ -1,0 +1,12 @@
+@use '../functions'as *;
+@use "../base"as *;
+
+.logo {
+  font-size: fs('5xl');
+  transition: all 0.3s ease 0s;
+  color: $color-primary;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}

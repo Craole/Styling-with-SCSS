@@ -1,5 +1,27 @@
 @use '../functions'as *;
+@use 'sass:math';
 
-$color-light: rgb(146, 49, 165);
-$color-dark: shade($color-light, 92);
+// COLOR
+$color-primary: purple;
+$color-dark: shade($color-primary, 80);
+$color-light: tint($color-primary, 80);
+
 $padding: em(10);
+
+// SIZE
+$size1: 70;
+$size2: math.div($size1, 1.4);
+$size3: math.div($size1, 2);
+
+$bg-size: em($size1);
+$ico-height: em(math.div($size1, 17.5));
+$ico-width: em(math.div($size1, 2));
+$radius: em(math.div($size1, 1.4));
+$trans: 0.4s ease;
+
+
+// @debug 'bg-size: #{$bg-size}';
+// @debug 'ico-height: #{$ico-height}';
+// @debug 'ico-width: #{$ico-width}';
+// @debug 'radius: #{$radius}';
+// @debug 'trans: #{$trans}';
