@@ -1,4 +1,5 @@
 @use "../constants/colors"as *;
+@use 'sass:map';
 
 //doc-> Generate color palette based on selected color.
 @function color($color, $shade) {
@@ -22,23 +23,23 @@
 }
 
 //doc-> Generate color palette based on selected color.
-@function colorPalette($color) {
-$palette: ( //@ Palette
-    50: mix(white, $color, 88%),
-    100: mix(white, $color, 70%),
-    200: mix(white, $color, 50%),
-    300: mix(white, $color, 30%),
-    400: mix(white, $color, 15%),
-    500: mix(white, $color, 0%),
-    600: mix(black, $color, 13%),
-    700: mix(black, $color, 30%),
-    800: mix(black, $color, 46%),
-    900: mix(black, $color, 75%),
-    A100: lighten(saturate(mix(black, $color, 15%), 80%), 45.6%),
-    A200: lighten(saturate(mix(black, $color, 15%), 80%), 35.6%),
-    A400: lighten(saturate(mix(black, $color, 15%), 100%), 25.6%),
-    A700: lighten(saturate(mix(black, $color, 15%), 100%), 20.5%));
-    @return $palette;
+@function palette($color) {
+  $palette: ( //@ Palette
+      50: mix(white, $color, 88%),
+      100: mix(white, $color, 70%),
+      200: mix(white, $color, 50%),
+      300: mix(white, $color, 30%),
+      400: mix(white, $color, 15%),
+      500: mix(white, $color, 0%),
+      600: mix(black, $color, 13%),
+      700: mix(black, $color, 30%),
+      800: mix(black, $color, 46%),
+      900: mix(black, $color, 75%),
+      A100: lighten(saturate(mix(black, $color, 15%), 80%), 45.6%),
+      A200: lighten(saturate(mix(black, $color, 15%), 80%), 35.6%),
+      A400: lighten(saturate(mix(black, $color, 15%), 100%), 25.6%),
+      A700: lighten(saturate(mix(black, $color, 15%), 100%), 20.5%));
+  @return $palette;
 }
 
 
