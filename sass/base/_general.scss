@@ -1,10 +1,14 @@
+@use '../constants'as *;
 @use '../functions'as *;
 @use 'sass:math';
+@use 'sass:map';
+@use 'sass:color';
 
 // COLOR
+$theme: 'assiko';
 $color-primary: purple;
-$color-dark: shade($color-primary, 80);
-$color-light: tint($color-primary, 80);
+$color-dark: black;
+$color-light: white;
 
 $padding: em(10);
 
@@ -19,10 +23,38 @@ $ico-width: em(math.div($size1, 2));
 $radius: em(math.div($size1, 1.4));
 $trans: 0.4s ease;
 
+$grid-configuration: ( // Grid
+  'columns': 12,
+  'layouts': ( //> Layouts
+    'small': 800px,
+    'medium': 1000px,
+    'large': 1200px,
+  ),
+);
 
-// @debug 'bg-size: #{$bg-size}';
-// @debug 'ico-height: #{$ico-height}';
-// @debug 'ico-width: #{$ico-width}';
-// @debug 'radius: #{$radius}';
-// @debug 'trans: #{$trans}';
-@debug palette(color('primary', 'normal'));
+$ORG: adjust-color($color-primary, $whiteness: 90%, $blackness: 0%, $alpha: -0.9);
+$ADJ: color-adjust($color-primary, $swatch: 0, $opacity: 1);
+
+@debug 'ORG => \
+OLD: #{$color-primary}, \
+NEW: #{$ORG}, \
+whiteness: #{color.whiteness($ORG)}, \
+blackness: #{color.blackness($ORG)}, \
+alpha: #{color.alpha($ORG)} \
+';
+
+@debug 'ADJ => \
+OLD: #{$color-primary}, \
+NEW: #{$ADJ}, \
+whiteness: #{color.whiteness($ADJ)}, \
+blackness: #{color.blackness($ADJ)}, \
+alpha: #{color.alpha($ADJ)} \
+';
+
+@debug color-family($color-primary);
+//@debug color.alpha($CLR);
+// @debug color.alpha($ORG);
+
+// 6999 (7999) for 6months (9100)
+//  150/50
+//  10GB | Unlimited Local Calls and Text, Youtube, Social

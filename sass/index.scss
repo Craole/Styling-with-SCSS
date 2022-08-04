@@ -1,7 +1,12 @@
-@use "base";
+// Finctions & Vsriables
 @use "functions";
-@use "components";
+
+// Base & Layout
+@use "base";
 @use "layout";
-@use "utilities";
+@use "components";
+
+// Utilities
+@use "utilities"; 
 @use "vendor";
 @use "updates";

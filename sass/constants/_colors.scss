@@ -3,28 +3,32 @@
 // >>= ============================================== =<< //
 // >>= PALETTES
 // >>= ============================================== =<< //
-// $palettes: ( //@ Color Palettes
-//   assiko: ( //> Assiko
-//     $clr_1: #272727,
-//     $clr_2: #747474,
-//     $clr_3: #ff652f,
-//     $clr_4: #ffe400,
-//     $clr_5: #14a76c,
-//   ),
-//   locus: ( //> Locus Solos
-//     $clr_1: #eae7dc,
-//     $clr_2: #d8c3a5,
-//     $clr_3: #8e8d8a,
-//     $clr_4: #e98974,
-//     $clr_5: #e85a4f,
-//   ),
-//   diadora: ( //> Diadora: Bright Delivery
-//     $clr_1: #faec29,
-//     $clr_2: #45334d,
-//     $clr_3: #5c5562,
-//     $clr_4: #9c8b8c,
-//     $clr_5: #997970,
-//   ));
+$palettes: ( //@ Color Palettes
+  'main': ( //> Main
+    'primary': #009688,
+    'accent': #ff9800,
+  ),
+  'assiko': ( //> Assiko
+    'clr_1': #272727,
+    'clr_2': #747474,
+    'clr_3': #ff652f,
+    'clr_4': #ffe400,
+    'clr_5': #14a76c,
+  ),
+  'locus': ( //> Locus Solos
+    'clr_1': #eae7dc,
+    'clr_2': #d8c3a5,
+    'clr_3': #8e8d8a,
+    'clr_4': #e98974,
+    'clr_5': #e85a4f,
+  ),
+  'diadora': ( //> Diadora: Bright Delivery
+    'clr_1': #faec29,
+    'clr_2': #45334d,
+    'clr_3': #5c5562,
+    'clr_4': #9c8b8c,
+    'clr_5': #997970,
+  ));
 
 
 // >>= ============================================== =<< //
@@ -34,17 +38,17 @@
 $colors: ( //@ Colors
   'neutral': ( //> Neutral
     'light': white,
-    'normal': gray,
+    'base': gray,
     'dark': black,
   ),
   'primary': ( //> Primary
     'light': $RESENE_sage,
-    'normal': $Terra_cotta,
+    'base': $Terra_cotta,
     'dark': $Catawba,
   ),
   'secondary': ( //> Secondary
     'light': lightblue,
-    'normal': blue,
+    'base': blue,
     'dark': darkblue,
   ));
 
@@ -52,4 +56,3 @@ $colors: ( //@ Colors
 // >>= ============================================== =<< //
 // >>= SHADES
 // >>= ============================================== =<< //
-
