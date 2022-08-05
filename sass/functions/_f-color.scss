@@ -32,17 +32,31 @@
 //doc -> Adjust a color's shade and opacity;\
 @function color-adjust($color, $swatch: 0, $opacity: 1) {
   $COLOR: color-validate($color);
+  // $SWATCH: math.percentage($swatch);
   $SWATCH: math.percentage(math.clamp(-1, $swatch, 1));
   $ALPHA: (math.clamp(0, math.abs($opacity), 1) - 1);
 
   @if $SWATCH>=0 {
-    @return color.adjust($color: $COLOR, $blackness: math.abs($SWATCH), $alpha: $ALPHA);
+    $SWATCH: math.abs($SWATCH);
+    // @return $SWATCH;
+    // @return '$color: #{$COLOR}, $blackness: #{$SWATCH}, $alpha: #{$ALPHA}';
+    @return color.adjust($color: $COLOR, $blackness: $SWATCH, $alpha: $ALPHA);
+
   }
 
   @else {
-    @return color.adjust($color: $COLOR, $whiteness: math.abs($SWATCH), $alpha: $ALPHA);
+    $SWATCH: math.abs($SWATCH);
+    // @return $SWATCH;
+    @return '$color: #{$COLOR}, $whiteness: #{$SWATCH}, $alpha: #{$ALPHA}';
+    // @return color.adjust($color: $COLOR, $whiteness: $SWATCH, $alpha: $ALPHA);
   }
 }
+
+$color: green;
+@debug color-adjust($color, 0.90);
+@debug color.blackness($color);
+@debug color.blackness(color-adjust($color, .9));
+
 
 //doc-> Lighten a $color by mixing it with white.
 @function color-tint($color, $percentage) {

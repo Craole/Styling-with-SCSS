@@ -32,26 +32,27 @@ $grid-configuration: ( // Grid
   ),
 );
 
-$ORG: adjust-color($color-primary, $whiteness: 90%, $blackness: 0%, $alpha: -0.9);
-$ADJ: color-adjust($color-primary, $swatch: 0, $opacity: 1);
+// $ORG: adjust-color($color-primary, $whiteness: 90%, $blackness: 0%, $alpha: -0.9);
+// $ADJ: color-adjust($color-primary, $swatch: .88, $opacity: 1);
 
-@debug 'ORG => \
-OLD: #{$color-primary}, \
-NEW: #{$ORG}, \
-whiteness: #{color.whiteness($ORG)}, \
-blackness: #{color.blackness($ORG)}, \
-alpha: #{color.alpha($ORG)} \
-';
+// @debug 'ORG => \
+// OLD: #{$color-primary}, \
+// NEW: #{$ORG}, \
+// whiteness: #{color.whiteness($ORG)}, \
+// blackness: #{color.blackness($ORG)}, \
+// alpha: #{color.alpha($ORG)} \
+// ';
 
-@debug 'ADJ => \
-OLD: #{$color-primary}, \
-NEW: #{$ADJ}, \
-whiteness: #{color.whiteness($ADJ)}, \
-blackness: #{color.blackness($ADJ)}, \
-alpha: #{color.alpha($ADJ)} \
-';
+// @debug 'ADJ => \
+// OLD: #{$color-primary}, \
+// NEW: #{$ADJ}, \
+// whiteness: #{color.whiteness($ADJ)}, \
+// blackness: #{color.blackness($ADJ)}, \
+// alpha: #{color.alpha($ADJ)} \
+// ';
 
-@debug color-family($color-primary);
+// @debug color-family($color-primary);
+// @debug color-adjust($color-primary);
 //@debug color.alpha($CLR);
 // @debug color.alpha($ORG);
 
