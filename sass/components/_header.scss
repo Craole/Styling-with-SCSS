@@ -6,7 +6,7 @@ header {
   $pad: 1em;
   // $color-pri: $color-primary;
   $color-pri: red;
-  $color-sec: color-adjust($color-pri, $swatch: .5);
+  $color-sec: blue;
 
   // >>= Parent =<< //
   padding: $pad;

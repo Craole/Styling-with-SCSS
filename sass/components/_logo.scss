@@ -3,13 +3,12 @@
 
 .logo {
   $color-active: $color-primary;
-  $color-hover: color-adjust($color-primary, $swatch: 0.3, $opacity: 0.8);
+  $color-hover: blue;
 
 
   font-size: fs('5xl');
   transition: all 0.3s ease 0s;
   color: $color-active;
-  // background-color: yellowgreen;
 
   img {
     // padding: 5px;

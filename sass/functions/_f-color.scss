@@ -3,146 +3,108 @@
 @use 'sass:map';
 @use 'sass:math';
 @use 'sass:color';
+@use 'sass:string';
 
 //doc-> Validate color.
-@function color-validate($COLOR) {
+@function color-validate($color) {
 
-  @if type-of($COLOR) !=color {
-    @error '[ Invalid color -> `#{$COLOR}` ]'
+  @if type-of($color) !=color {
+    @error '[ Invalid color -> `#{$color}` ]'
   }
 
   @else {
-    @return $COLOR;
+    @return $color;
   }
 }
 
-//doc-> Swatch(Shade and Tine)
-@function swatch($SWATCH) {
+//doc-> Swatch( <color>, <[ -100 White | 0 Neutral | 100 Black ]> )
+@function color-swatch($color, $swatch: 0) {
+  $SWATCH: math.percentage(math.div(math.clamp(-100, $swatch, 100), 100));
+
   @if $SWATCH>=0 {
-    $BLACK: math.abs($SWATCH);
-    @return $BLACK;
+    @return mix(black, $color, math.abs($SWATCH));
   }
 
   @else {
-    $WHITE: math.abs($SWATCH);
-    @return $WHITE;
+    @return mix(white, $color, math.abs($SWATCH));
   }
+}
+
+//doc-> Alpha( <color>, <[ 0 Transparent | 1 Opaque ]> )
+@function color-alpha($color, $alpha: 1) {
+  $ALPHA: (math.clamp(0, math.abs($alpha), 1) - 1);
+  @return color.adjust($color, $alpha: $ALPHA);
 }
 
 //doc -> Adjust a color's shade and opacity;\
-@function color-adjust($color, $swatch: 0, $opacity: 100) {
+@function color-adjust($color, $swatch: 0, $alpha: 1) {
   $COLOR: color-validate($color);
-  $SWATCH: math.percentage(math.div(math.clamp(-100, $swatch, 100), 100));
-  $ALPHA: (math.clamp(0, math.abs($opacity), 1) - 1);
-
-  @if $SWATCH>=0 {
-    $SWATCH: math.abs($SWATCH);
-    $MIX: color.mix(black, $COLOR, $SWATCH);
-    $COLOR: color.adjust($color: $MIX, $alpha: $ALPHA);
-    @return $COLOR;
-  }
-
-  @else {
-    $SWATCH: math.abs($SWATCH);
-    $MIX: color.mix(white, $COLOR, $SWATCH);
-    $COLOR: color.adjust($color: $MIX, $alpha: $ALPHA);
-
-    @return $COLOR;
-
-  }
+  $SWATCH: color-swatch($COLOR, $swatch);
+  $ALPHA: color-alpha($SWATCH, $alpha);
+  @return $ALPHA;
 }
-
-$color: #a58687;
-$COLOR: color-adjust($color, 80);
-
-@debug 'ORIG_COLOR|> \
-Whiteness: #{color.whiteness($color)}, \
-Blackness: #{color.blackness($color)}, \
-Opacity: #{color.opacity($color)}, \
-Color: #{$color}';
-
-@debug ' NEW_COLOR|> \
-Whiteness: #{color.whiteness($COLOR)}, \
-Blackness: #{color.blackness($COLOR)}, \
-Opacity: #{color.opacity($COLOR)}, \
-Color: #{$COLOR}';
-
-
-//doc-> Lighten a $color by mixing it with white.
-@function color-tint($color, $percentage) {
-  @return mix(white, $color, $percentage);
-}
-
-//doc-> Darken a $color by mixing it with black.
-@function color-shade($color, $percentage) {
-  @return mix(black, $color, $percentage);
-}
-
 
 //doc-> Pull color from Pallette map
-@function color-palette($PALETTE, $COLOR) {
+@function color-palette($palette, $color) {
 
-  @if not map-has-key($palettes, $PALETTE) {
+  @if not map-has-key($palettes, $palette) {
     $KEYS: map-keys($map: $palettes);
     @error '[ Invalid palette -> \'#{$palette}\' ] [ Valid palettes -> #{$KEYS} ]';
   }
 
-  @else if not map-has-key($palettes, $PALETTE, $COLOR) {
-    $KEYS: map-keys(map-get($palettes, $PALETTE));
-    @error '[ Invalid color -> \'#{$COLOR}\' ] [ Valid colors -> #{$KEYS} ]';
+  @else if not map-has-key($palettes, $palette, $color) {
+    $KEYS: map-keys(map-get($palettes, $palette));
+    @error '[ Invalid color -> \'#{$color}\' ] [ Valid colors -> #{$KEYS} ]';
   }
 
   @else {
-    @return map-get($palettes, $PALETTE, $COLOR);
+    @return map-get($palettes, $palette, $color);
   }
 }
 
 
-//doc-> Generate color palette based on selected color.
-@function color-family($COLOR) {
-  $lo: -0.25;
-  $md: -0.5;
-  $hi: -0.75;
+//doc-> Generate color family of pre-defined shades.
+@function color-family($color) {
+  $lo: 45;
+  $md: 75;
+  $hi: 90;
+  $whiter: -0.86;
+  $blacker: 1.06;
 
-  $FAMILY: ( //@ Color Family
-      // 'lightest': color-adjust($COLOR, $lo),
-      // 'lighter': color-adjust($COLOR, $md),
-      // 'light': color-adjust($COLOR, $hi),
-      // 'base': $COLOR,
-      // 'dark': color-adjust($COLOR, math.abs($hi)),
-      // 'darker': color-adjust($COLOR, math.abs($md)),
-      // 'darkest': color-adjust($COLOR, math.abs($lo)),
-      'lightest': color-adjust($COLOR, -0.25),
-      'lighter': color-adjust($COLOR, -0.5),
-      'light': color-adjust($COLOR, -0.75),
-      'base': $COLOR,
-      'dark': color-adjust($COLOR, math.abs($hi)),
-      'darker': color-adjust($COLOR, math.abs($md)),
-      'darkest': color-adjust($COLOR, math.abs($lo)),
-    );
 
-  @return $FAMILY;
-
+  @return ( //@ Color Family
+    'lightest': color-swatch($color, $hi * $whiter),
+    'lighter': color-swatch($color, $md * $whiter),
+    'light': color-swatch($color, $lo * $whiter),
+    'base': $color,
+    'dark': color-swatch($color, $lo * $blacker),
+    'darker': color-swatch($color, $md * $blacker),
+    'darkest': color-swatch($color, $hi * $blacker),
+  );
 }
 
-@function color-swatch($COLOR, $SWATCH) {
-  $FAMILY: color-family($COLOR);
-  $KEYS: map-keys($map: $FAMILY);
 
-  @if not map-has-key($FAMILY, $SWATCH) {
-    @error '[ Invalid swatch -> #{$SWATCH} ] [ Valid swatches -> #{$KEYS} ]';
+@function color-shade($color, $shade) {
+  $family: color-family($color);
+  $keys: map-keys($map: $family);
+
+  @if not map-has-key($family, $shade) {
+    @error '[ Invalid swatch -> #{$shade} ] [ Valid swatches -> #{$keys} ]';
   }
 
   @else {
-    @return map-get($FAMILY, $SWATCH);
+    @return map-get($family, $shade);
   }
 }
 
-//doc-> Pull theme, color and swatch.
-@function colah($PALETTE, $COLOR, $SWATCH) {
+//doc-> Pull theme, color and shade.
+@function colah($palette: 'main', $color: 'primary', $shade: 'base', $alpha: 1) {
+  $COLOR: color-palette($palette, $color);
 
-  $COLOR: color-palette($PALETTE, $COLOR);
-  $COLAH: color-swatch($COLOR, $SWATCH);
-
-  @return $COLAH;
+  // @return color-alpha(color-shade(color-palette($palette, $color),
+  //       $swatch),
+  //     $alpha);
+  @return $COLOR
 }
+
+@debug colah('diadora', 'clr_1', 'dark', 0.8);

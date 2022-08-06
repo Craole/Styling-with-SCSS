@@ -6,7 +6,9 @@
 $palettes: ( //@ Color Palettes
   'main': ( //> Main
     'primary': #009688,
-    'accent': #ff9800,
+    'secondary': #ff9800,
+    'teritiary': #683dc4,
+
   ),
   'assiko': ( //> Assiko
     'clr_1': #272727,
@@ -28,7 +30,22 @@ $palettes: ( //@ Color Palettes
     'clr_3': #5c5562,
     'clr_4': #9c8b8c,
     'clr_5': #997970,
-  ));
+  ),
+  'test': ( //test
+    "lightest": #ffe6e6,
+    "lighter": #ffbfbf,
+    "light": #ff7373,
+    "base": red,
+    "dark": #8c0000,
+    "darker": #400000,
+    "darkest": #1a0000,
+  ),
+  'testyello': ( //test
+    "lightest": #d8e8c7, "lighter": #deecd0, "light": #9cc571, "base": #589e11, "dark": #305709, "darker": #162804, "darkest": #091002,
+  ),
+  'testgreen': ( //test
+    "lightest": #fee2df, "lighter": #f2dfb0, "light": #e8c876, "base": goldenrod, "dark": #725611, "darker": #010808, "darkest": #0c0605),
+);
 
 
 // >>= ============================================== =<< //
