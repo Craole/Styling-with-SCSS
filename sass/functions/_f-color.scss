@@ -3,7 +3,6 @@
 @use 'sass:map';
 @use 'sass:math';
 @use 'sass:color';
-@use 'sass:string';
 
 //doc-> Validate color.
 @function color-validate($color) {
@@ -17,32 +16,11 @@
   }
 }
 
-//doc-> Swatch( <color>, <[ -100 White | 0 Neutral | 100 Black ]> )
-@function color-swatch($color, $swatch: 0) {
-  $SWATCH: math.percentage(math.div(math.clamp(-100, $swatch, 100), 100));
-
-  @if $SWATCH>=0 {
-    @return mix(black, $color, math.abs($SWATCH));
-  }
-
-  @else {
-    @return mix(white, $color, math.abs($SWATCH));
-  }
-}
-
-//doc-> Alpha( <color>, <[ 0 Transparent | 1 Opaque ]> )
-@function color-alpha($color, $alpha: 1) {
-  $ALPHA: (math.clamp(0, math.abs($alpha), 1) - 1);
-  @return color.adjust($color, $alpha: $ALPHA);
-}
-
-//doc -> Adjust a color's shade and opacity;\
-@function color-adjust($color, $swatch: 0, $alpha: 1) {
-  $COLOR: color-validate($color);
-  $SWATCH: color-swatch($COLOR, $swatch);
-  $ALPHA: color-alpha($SWATCH, $alpha);
-  @return $ALPHA;
-}
+// @debug color-validate(pink);
+// @debug color-validate(#312e91);
+// @debug color-validate(#a31c6022);
+// @debug color-validate(hsla(163, 74%, 38%, 0.834));
+// @debug color-validate(rgba(155, 171, 53, 0.133));
 
 //doc-> Pull color from Pallette map
 @function color-palette($palette, $color) {
@@ -62,49 +40,89 @@
   }
 }
 
+// @debug color-palette('main', 'secondary');
 
-//doc-> Generate color family of pre-defined shades.
-@function color-family($color) {
+//doc-> Alpha( <color>, <[ 0 Transparent | 1 Opaque ]> )
+@function color-alpha($color, $alpha: 1) {
+  $ALPHA: (math.clamp(0, math.abs($alpha), 1) - 1);
+  @return color.adjust($color, $alpha: $ALPHA);
+}
+
+// @debug color-alpha(red, 0.4);
+// @debug color-alpha(hsl(0, 100%, 50%), 0.4);
+
+//doc-> Swatch( <color>, <[ -100 White | 0 Neutral | 100 Black ]> )
+@function color-swatch($color, $swatch: 0) {
+  $SWATCH: math.percentage(math.div(math.clamp(-100, $swatch, 100), 100));
+
+  @if $SWATCH>=0 {
+    @return mix(black, $color, math.abs($SWATCH));
+  }
+
+  @else {
+    @return mix(white, $color, math.abs($SWATCH));
+  }
+}
+
+// @debug color-swatch(blue, 79);
+// @debug color-swatch(blue, -61);
+
+//doc-> Generate color shades.
+@function color-shade($color, $shade: null) {
   $lo: 45;
   $md: 75;
   $hi: 90;
   $whiter: -0.86;
   $blacker: 1.06;
 
+  $SHADES: ( //@ Color Family
+      'lightest': color-swatch($color, $hi * $whiter),
+      'lighter': color-swatch($color, $md * $whiter),
+      'light': color-swatch($color, $lo * $whiter),
+      'base': $color,
+      'dark': color-swatch($color, $lo * $blacker),
+      'darker': color-swatch($color, $md * $blacker),
+      'darkest': color-swatch($color, $hi * $blacker),
+    );
 
-  @return ( //@ Color Family
-    'lightest': color-swatch($color, $hi * $whiter),
-    'lighter': color-swatch($color, $md * $whiter),
-    'light': color-swatch($color, $lo * $whiter),
-    'base': $color,
-    'dark': color-swatch($color, $lo * $blacker),
-    'darker': color-swatch($color, $md * $blacker),
-    'darkest': color-swatch($color, $hi * $blacker),
-  );
-}
-
-
-@function color-shade($color, $shade) {
-  $family: color-family($color);
-  $keys: map-keys($map: $family);
-
-  @if not map-has-key($family, $shade) {
-    @error '[ Invalid swatch -> #{$shade} ] [ Valid swatches -> #{$keys} ]';
+  @if $shade==null {
+    @return $SHADES;
   }
 
   @else {
-    @return map-get($family, $shade);
+    $KEYS: map-keys($map: $SHADES);
+
+    @if not map-has-key($SHADES, $shade) {
+      @error '[ Invalid swatch -> #{$shade} ] [ Valid swatches -> #{$KEYS} ]';
+    }
+
+    @else {
+      @return map-get($SHADES, $shade);
+    }
   }
 }
 
-//doc-> Pull theme, color and shade.
-@function colah($palette: 'main', $color: 'primary', $shade: 'base', $alpha: 1) {
-  $COLOR: color-palette($palette, $color);
+// @debug color-shade(violet);
+// @debug color-shade(violet,'lighter');
 
-  // @return color-alpha(color-shade(color-palette($palette, $color),
-  //       $swatch),
-  //     $alpha);
-  @return $COLOR
+//doc -> Adjust a color's swatch and opacity;
+@function colah($color, $swatch: 0, $alpha: 1) {
+  $COLOR: color-validate($color);
+  $SWATCH: color-swatch($COLOR, $swatch);
+  $ALPHA: color-alpha($SWATCH, $alpha);
+  $COLAH: $ALPHA;
+  @return $COLAH;
 }
 
-@debug colah('diadora', 'clr_1', 'dark', 0.8);
+// @debug colah(turquoise,80,.75);
+
+//doc -> Adjust a palette color's shade and opacity;
+@function colah-sys($palette: 'main', $color: 'primary', $shade: 'base', $alpha: 1) {
+  $COLOR: color-palette($palette, $color);
+  $SHADE: color-shade($COLOR, $shade);
+  $ALPHA: color-alpha($SHADE, $alpha);
+  $COLAH: $ALPHA;
+  @return $COLAH;
+}
+
+// @debug colah-sys('assiko', 'clr_5', 'dark');
