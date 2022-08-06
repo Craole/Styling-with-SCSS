@@ -1,38 +1,36 @@
 @use '../functions/'as *;
+@use '../base/'as *;
 
 #hero {
-  background-color: #27262e;
+  // background-color: #27262e;
   color: teal;
   // height: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1em;
+  height: 100%;
 
   section {
-    display: grid;
-    // grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-    // gap: 1em;
-    height: 100%;
-  }
-
-  article {
+    padding: 1em;
     display: grid;
     place-items: center;
     height: 100%;
-
     font-size: fs('6xl');
 
-    &#dev {
-      color: red;
+    #dev {
+      color: darkorange;
     }
 
-    &#art {
-      color: yellow;
-    }
-
-    &#efl {
+    #efl {
       color: green;
     }
 
-    &#biz {
-      color: purple;
+    #art {
+      color: plum;
+    }
+
+    #biz {
+      color: royalblue;
     }
   }
 }

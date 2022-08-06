@@ -1,0 +1,17 @@
+@use '../base'as *;
+
+article {
+  // >>= Props =<< //
+  $padding: 1em;
+  $color-bg: lightblue;
+  $color-fg: white;
+
+  // >>= Parent =<< //
+  height: 100%;
+
+  // >>= Children =<< //
+  .title {
+    color: $color-fg;
+    text-transform: uppercase;
+  }
+}

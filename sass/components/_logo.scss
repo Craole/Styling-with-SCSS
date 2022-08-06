@@ -2,11 +2,23 @@
 @use "../base"as *;
 
 .logo {
+  $color-active: $color-primary;
+  $color-hover: color-adjust($color-primary, $swatch: 0.3, $opacity: 0.8);
+
+
   font-size: fs('5xl');
   transition: all 0.3s ease 0s;
-  color: $color-primary;
+  color: $color-active;
+  // background-color: yellowgreen;
 
-  &:hover {
-    transform: scale(1.1);
+  img {
+    // padding: 5px;
+    width: 1em;
+    cursor: pointer;
+  }
+
+  img:hover {
+    // color: $color-hover;
+    fill: green;
   }
 }

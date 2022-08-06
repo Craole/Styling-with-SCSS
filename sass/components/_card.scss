@@ -1,8 +1,8 @@
-@use '../libraries' as lib;
+@use '../libraries'as *;
 
 .card {
   display: block;
   padding: 16px;
-  border: 5px solid lib.$Coral_color_Sango-iro;
-  color: lib.$Rebecca_Purple;
+  border: 5px solid $Coral_color_Sango-iro;
+  color: $Rebecca_Purple;
 }

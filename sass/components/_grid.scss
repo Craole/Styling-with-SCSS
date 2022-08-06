@@ -1,27 +1,33 @@
+@use '../base'as *;
+
 #app {
   display: grid;
-  grid-template-areas:
-    "header"
-    "main"
-    "footer";
+  height: 100vh;
   grid-template-rows: auto 1fr auto;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+    "header nav"
+    "main main"
+    "footer footer";
 
   header {
     grid-area: header;
-    position: fixed;
-    width: 100%;
-    top: 0;
+    background-color: lightseagreen;
+  }
+
+  nav {
+    grid-area: nav;
+    background-color: lightcoral;
   }
 
   main {
     grid-area: main;
+    background-color: gold;
     overflow: auto;
   }
 
   footer {
     grid-area: footer;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
+    background-color: lightseagreen;
   }
 }

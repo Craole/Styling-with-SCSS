@@ -7,10 +7,11 @@
 // COLOR
 $theme: 'assiko';
 $color-primary: purple;
+$color-pri-text: color-adjust($color-primary, 0, 0.3);
 $color-dark: black;
 $color-light: white;
 
-$padding: em(10);
+$padding: em(2);
 
 // SIZE
 $size1: 70;

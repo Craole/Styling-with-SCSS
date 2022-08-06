@@ -1,21 +1,31 @@
-@use '../functions'as *;
 @use '../base'as *;
+@use '../functions'as *;
 
 header {
-  background-color: $color-dark;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  gap: $padding;
-  place-items: center;
-  color: $color-light;
+  // >>= Props =<< //
+  $pad: 1em;
+  // $color-pri: $color-primary;
+  $color-pri: red;
+  $color-sec: color-adjust($color-pri, $swatch: .5);
 
-  * {
-    cursor: pointer;
-    color: inherit;
-    padding: $padding;
+  // >>= Parent =<< //
+  padding: $pad;
+
+  // >>= Children =<< //
+  figure {
+    transition: all 0.3s ease 0s;
+    color: $color-pri;
+    background-color: $color-sec;
+
+    img {
+      width: 1em;
+      cursor: pointer;
+    }
+
+    img:hover {
+      color: $color-sec;
+      fill: $color-pri;
+    }
   }
 
-  h1 {
-    font-size: fs('4xl');
-  }
 }

@@ -30,32 +30,42 @@
 }
 
 //doc -> Adjust a color's shade and opacity;\
-@function color-adjust($color, $swatch: 0, $opacity: 1) {
+@function color-adjust($color, $swatch: 0, $opacity: 100) {
   $COLOR: color-validate($color);
-  // $SWATCH: math.percentage($swatch);
-  $SWATCH: math.percentage(math.clamp(-1, $swatch, 1));
+  $SWATCH: math.percentage(math.div(math.clamp(-100, $swatch, 100), 100));
   $ALPHA: (math.clamp(0, math.abs($opacity), 1) - 1);
 
   @if $SWATCH>=0 {
     $SWATCH: math.abs($SWATCH);
-    // @return $SWATCH;
-    // @return '$color: #{$COLOR}, $blackness: #{$SWATCH}, $alpha: #{$ALPHA}';
-    @return color.adjust($color: $COLOR, $blackness: $SWATCH, $alpha: $ALPHA);
-
+    $MIX: color.mix(black, $COLOR, $SWATCH);
+    $COLOR: color.adjust($color: $MIX, $alpha: $ALPHA);
+    @return $COLOR;
   }
 
   @else {
     $SWATCH: math.abs($SWATCH);
-    // @return $SWATCH;
-    @return '$color: #{$COLOR}, $whiteness: #{$SWATCH}, $alpha: #{$ALPHA}';
-    // @return color.adjust($color: $COLOR, $whiteness: $SWATCH, $alpha: $ALPHA);
+    $MIX: color.mix(white, $COLOR, $SWATCH);
+    $COLOR: color.adjust($color: $MIX, $alpha: $ALPHA);
+
+    @return $COLOR;
+
   }
 }
 
-$color: green;
-@debug color-adjust($color, 0.90);
-@debug color.blackness($color);
-@debug color.blackness(color-adjust($color, .9));
+$color: #a58687;
+$COLOR: color-adjust($color, 80);
+
+@debug 'ORIG_COLOR|> \
+Whiteness: #{color.whiteness($color)}, \
+Blackness: #{color.blackness($color)}, \
+Opacity: #{color.opacity($color)}, \
+Color: #{$color}';
+
+@debug ' NEW_COLOR|> \
+Whiteness: #{color.whiteness($COLOR)}, \
+Blackness: #{color.blackness($COLOR)}, \
+Opacity: #{color.opacity($COLOR)}, \
+Color: #{$COLOR}';
 
 
 //doc-> Lighten a $color by mixing it with white.
