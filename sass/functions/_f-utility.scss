@@ -1,0 +1,40 @@
+@use 'sass:math';
+@use 'sass:meta';
+
+//doc-> Convert pixels to em units
+@function em($pixel) {
+  @if math.is-unitless($pixel) {
+    @return math.div($pixel, 16)+em;
+  }
+
+  @else {
+    @error 'Don\'t use units when using the em() function; only numbers';
+  }
+}
+
+//doc-> Convert pixels to rem units
+@function rem($pixel) {
+  @if math.is-unitless($pixel) {
+    @return math.div($pixel, 16)+rem;
+  }
+
+  @else {
+    @error 'Don\'t use units when using the rem() function; only numbers';
+  }
+}
+
+@function check-type($var, $type) {
+
+  @if not meta.global-variable-exists($var) {
+    @error 'invalid variable: `#{$var}` is found';
+  }
+
+  @else if meta.type-of($var) !=$type {
+    @error 'invalid type: `#{$var}` is not a valid #{$type}';
+  }
+
+  @else {
+    @return $var;
+    @return 'reason';
+  }
+}

@@ -1,74 +1,196 @@
 @use "../constants"as *;
-// @use '../functions/f-mapper'as *;
+@use "./f-utility"as *;
 @use 'sass:map';
 @use 'sass:math';
 @use 'sass:color';
+@use 'sass:list';
 
-//doc-> Validate color.
-@function color-validate($color) {
+@function color-var($color) {
+  //doc-> Validate color.
+  $color: #{check-type($color, color)};
+  @return $color;
+}
 
-  @if type-of($color) !=color {
-    @error '[ Invalid color -> `#{$color}` ]'
+@function color-luminance($color) {
+  //doc-> Relative Luminance of a color.
+  /*
+  |> References <|
+  https://www.w3.org/TR/2008/REC-WCAG20-20081211/#relativeluminancedef
+
+  For the sRGB colorspace, the relative luminance of a color is defined as:
+  @ Luminance
+  L = (0.2126 * R) + (0.7152 * G) + (0.0722 * B)
+
+  @ RGB
+  if sRGB <= 0.03928 then RGB = sRGB/12.92 else RGB = ((sRGB+0.055)/1.055) ^ 2.4
+  sRGB = RGB8bit/255
+
+  |> Usage <|
+  To be used in other functions or mixins — creates non-standard CSS output
+  ____________________________________________
+  color-luminance(#800080);
+  output => 0.0614770704
+  ____________________________________________
+  */
+
+  $RGB: red($color), green($color), blue($color);
+  $COLOR: ();
+
+  @for $i from 1 through 3 {
+    $sRGB: math.div(list.nth($RGB, $i), 255);
+
+    $sRGB: if($sRGB < .03928,
+        math.div($sRGB, 12.92),
+        math.pow(math.div(($sRGB + .055), 1.055), 2.4));
+
+    $COLOR: append($COLOR, $sRGB);
+  }
+
+  $RsRGB: nth($COLOR, 1) * 0.2126;
+  $GsRGB: nth($COLOR, 2) * 0.7152;
+  $BsRGB: nth($COLOR, 3) * 0.0722;
+
+  $LUMINANCE: ($RsRGB)+($GsRGB)+($BsRGB);
+
+  @return $LUMINANCE;
+}
+
+@function color-contrast($color1, $color2) {
+  // doc -> Calculate "readability" as defined by WCAG 2.1
+  /*
+  |> References <|
+  https://css-tricks.com/programming-sass-to-create-accessible-color-combinations/
+  http://www.w3.org/TR/2008/REC-WCAG20-20081211/#contrast-ratiodef
+
+  |> Usage <|
+  To be used in other functions or mixins — creates non-standard CSS output
+  ____________________________________________
+  color-contrast(#800080, #d5a7d5);
+  output => 4.63
+  ____________________________________________
+ */
+
+  $COLOR1: color-luminance($color1) + 0.05;
+  $COLOR2: color-luminance($color2) + 0.05;
+  $RATIO: math.div($COLOR1, $COLOR2);
+
+  @if $COLOR2>$COLOR1 {
+    $RATIO: math.div(1, $RATIO);
+  }
+
+  // Round to a hundreth because 6.96 should not pass a RATIO of 7.0
+  $RATIO: math.div(math.round($RATIO * 100), 100);
+  @return $RATIO;
+}
+
+@function color-palette($palette_map: null, $palette: null, $color: null) {
+  //doc-> Get palettes and colors from a pallette map
+  /*
+  |> References <|
+
+
+  |> Usage <|
+  ____________________________________________
+  color-palette($PALETTES: $sample_palettes, $PALETTE: 'test', $COLOR: 'secondary');
+  ____________________________________________
+  */
+
+  // | MAP - Palettes
+  $default_map: $palettes;
+  $PALETTES: if($palette_map, $palette_map, $default_map);
+  $PALETTES: check-type($PALETTES, map);
+
+  $default_palette: list.nth($PALETTES, 1);
+  $PALETTE: if($palette, $palette, $default_palette);
+
+  @return $PALETTE;
+
+
+  //? $pallette_map argument included.
+
+  // @if $PALETTES !=null {
+  //   $PALETTES: check-type($PALETTES, map);
+  //   @return $PALETTES;
+  // }
+
+  // //? $pallette_map argument missing.
+  // @else {
+  //   $PALETTES: check-type($palettes, map);
+  //   @return $PALETTES;
+  // }
+
+
+
+  // | KEY 1 - Palette
+  // $default_palette: list.nth($PALETTES, 2);
+  // $PALETTE: if($palette, $palette, $default_palette);
+
+  // @return $PALETTE;
+
+  // @if not map-has-key($PALETTES, $PALETTE) {
+  //   $KEYS: map-keys($map: $PALETTES);
+  //   @error '[ Invalid palette -> \'{$PALETTE}\' ] [ Valid palettes -> #{$KEYS} ]';
+  // }
+
+  // @return map-get($PALETTES, $PALETTE);
+  // @else {@return $PALETTE;}
+  // // | KEY 2 - Color
+  // @else if ($COLOR) {
+  //   @if not map-has-key($PALETTES, $PALETTE, $COLOR) {
+  //     $KEYS: map-keys(map-get($PALETTES, $PALETTE));
+  //     @error '[ Invalid color -> \'#{$COLOR}\' ] [ Valid colors -> #{$KEYS} ]';
+  //   }
+
+  //   @return map-get($PALETTES, $PALETTE, $COLOR);
+  // }
+
+  // @else {
+  //   @return map-get($PALETTES, $PALETTE);
+  // }
+  // }
+
+  /*
+  @if not map-has-key($PALETTES, $PALETTE) {
+    $KEYS: map-keys($map: $PALETTES);
+    @error '[ Invalid palette -> \'#{$PALETTE}\' ] [ Valid palettes -> #{$KEYS} ]';
+  }
+
+  @else if ($COLOR) {
+    @if not map-has-key($PALETTES, $PALETTE, $COLOR) {
+      $KEYS: map-keys(map-get($PALETTES, $PALETTE));
+      @error '[ Invalid color -> \'#{$COLOR}\' ] [ Valid colors -> #{$KEYS} ]';
+    }
+
+    @return map-get($PALETTES, $PALETTE, $COLOR);
   }
 
   @else {
-    @return $color;
+    @return map-get($PALETTES, $PALETTE);
   }
+  */
 }
 
-// @debug color-validate(pink);
-// @debug color-validate(#312e91);
-// @debug color-validate(#a31c6022);
-// @debug color-validate(hsla(163, 74%, 38%, 0.834));
-// @debug color-validate(rgba(155, 171, 53, 0.133));
-
-//doc-> Pull color from Pallette map
-@function color-palette($palette, $color) {
-
-  @if not map-has-key($palettes, $palette) {
-    $KEYS: map-keys($map: $palettes);
-    @error '[ Invalid palette -> \'#{$palette}\' ] [ Valid palettes -> #{$KEYS} ]';
-  }
-
-  @else if not map-has-key($palettes, $palette, $color) {
-    $KEYS: map-keys(map-get($palettes, $palette));
-    @error '[ Invalid color -> \'#{$color}\' ] [ Valid colors -> #{$KEYS} ]';
-  }
-
-  @else {
-    @return map-get($palettes, $palette, $color);
-  }
-}
-
-// @debug color-palette('main', 'secondary');
-
-//doc-> Alpha( <color>, <[ 0 Transparent | 1 Opaque ]> )
 @function color-alpha($color, $alpha: 1) {
+  //doc-> Alpha( <color>, <[ 0 Transparent | 1 Opaque ]> )
   $ALPHA: (math.clamp(0, math.abs($alpha), 1) - 1);
   @return color.adjust($color, $alpha: $ALPHA);
 }
 
-// @debug color-alpha(red, 0.4);
-// @debug color-alpha(hsl(0, 100%, 50%), 0.4);
-
-//doc-> Swatch( <color>, <[ -100 White | 0 Neutral | 100 Black ]> )
 @function color-swatch($color, $swatch: 0) {
+  //doc-> Swatch( <color>, <[ -100 White | 0 Neutral | 100 Black ]> )
   $SWATCH: math.percentage(math.div(math.clamp(-100, $swatch, 100), 100));
 
   @if $SWATCH>=0 {
-    @return mix(black, $color, math.abs($SWATCH));
+    @return mix(#000000, $color, math.abs($SWATCH));
   }
 
   @else {
-    @return mix(white, $color, math.abs($SWATCH));
+    @return mix(#ffffff, $color, math.abs($SWATCH));
   }
 }
 
-// @debug color-swatch(blue, 79);
-// @debug color-swatch(blue, -61);
-
-//doc-> Generate color shades.
 @function color-shade($color, $shade: null) {
+  //doc-> Generate color shades.
   $lo: 45;
   $md: 75;
   $hi: 90;
@@ -102,27 +224,129 @@
   }
 }
 
-// @debug color-shade(violet);
-// @debug color-shade(violet,'lighter');
-
-//doc -> Adjust a color's swatch and opacity;
 @function colah($color, $swatch: 0, $alpha: 1) {
-  $COLOR: color-validate($color);
+  //doc -> Adjust a color's swatch and opacity;
+  // $COLOR: color-var($color);
+  $COLOR: $color;
   $SWATCH: color-swatch($COLOR, $swatch);
   $ALPHA: color-alpha($SWATCH, $alpha);
   $COLAH: $ALPHA;
   @return $COLAH;
 }
 
-// @debug colah(turquoise,80,.75);
-
-//doc -> Adjust a palette color's shade and opacity;
-@function colah-sys($palette: 'main', $color: 'primary', $shade: 'base', $alpha: 1) {
-  $COLOR: color-palette($palette, $color);
+@function colah-psa($PALETTES: $palettes, $PALETTE: 'main', $COLOR: 'primary', $shade: 'base', $alpha: 1) {
+  //doc -> Adjust a palette color's shade and alpha;
+  $COLOR: color-palette($PALETTES, $PALETTE, $COLOR);
   $SHADE: color-shade($COLOR, $shade);
   $ALPHA: color-alpha($SHADE, $alpha);
   $COLAH: $ALPHA;
   @return $COLAH;
 }
 
-// @debug colah-sys('assiko', 'clr_5', 'dark');
+// TODO
+/*
+Generate color schemes that adhere to assissability standards including text, background, accent colors.
+https://webdesign.tutsplus.com/articles/css-tips-for-better-color-and-contrast-accessibility--cms-34472
+*/
+
+
+// =<< TESTING >>=
+$sample_palettes: ( //| Color Palettes
+  'test': ( //> Main
+    'primary': #009688,
+    'secondary': #d9a520c1,
+    'neutralL': #ffffff,
+    'neutralD': #0b1015,
+  ),
+);
+
+$sample_pal: map-get($sample_palettes, 'test');
+$sample_pri: map-get($sample_pal, 'primary');
+$sample_sec: map-get($sample_pal, 'secondary');
+$sample_light: map-get($sample_pal, 'neutralL');
+$sample_dark: map-get($sample_pal, 'neutralD');
+$sample_rat: 4.51;
+
+/*
+//> variables
+@debug '|> Sample Variables <|';
+@debug 'Color - Primary: #{$sample_pri}';
+@debug 'Color - Secondary: #{$sample_sec}';
+@debug 'Color - Light: #{$sample_light}';
+@debug 'Color - Dark: #{$sample_dark}';
+@debug 'Ratio - Threshold: #{$sample_rat}';
+@debug '';
+*/
+/*
+//> var
+@debug '|> validate <|';
+@debug color-var($sample_pri);
+@debug color-var(#312e9164);
+@debug color-var(hsla(163, 74%, 38%, 0.834));
+@debug color-var(rgba(155, 171, 53, 0.133));
+@debug color-var(#0da4af);
+@debug '';
+ */
+/*
+//> luminance
+@debug '|> luminance <|';
+@debug color-luminance($sample_pri);
+@debug '';
+*/
+/*
+//> contrast
+@debug '|> contrast <|';
+@debug color-contrast($sample_pri, $sample_sec);
+@debug '';
+*/
+
+//> palette
+@debug '|> palette <|';
+// @debug color-palette($sample_palettes, 'test');
+// @debug color-palette($sample_palettes, 'test', 'secondary');
+// @debug color-palette($sample_palettes, test, secondary);
+// @debug color-palette($sample_pri);
+// @debug color-palette($sample_palettes);
+// @debug color-palette();
+@debug color-palette($palette: 'main');
+@debug '';
+
+/*
+//> alpha
+@debug '|> alpha <|';
+@debug color-alpha($sample_pri, 0.7);
+@debug color-alpha(color-palette($sample_palettes, 'test', 'primary'), 0.56);
+@debug color-alpha(hsl(14deg, 100%, 50%), 0.4);
+@debug '';
+
+//> swatch
+@debug '|> swatch <|';
+@debug '$base: #{color-swatch($sample_pri, 0)}';
+@debug '$max: #{color-swatch($sample_pri, 100)}';
+@debug '$min: #{color-swatch($sample_pri, -100)}';
+@debug '90% shade: #{color-swatch($sample_pri, 90)}';
+@debug '90% tint: #{color-swatch($sample_pri, -90)}';
+@debug '';
+
+//> shade
+@debug '|> swatch <|';
+@debug color-shade($sample_pri);
+@debug '$lighter: #{color-shade($sample_pri, lighter)}';
+@debug '$darkest: #{color-shade($sample_pri, 'darkest')}';
+@debug '';
+
+//> colah
+@debug '|> colah <|';
+@debug 'primary, no args: #{colah($sample_pri)}';
+@debug '$color: primary, $swatch: 30 => #{colah($sample_pri, $swatch: 30)}';
+@debug '$color: primary, $alpha: 0.75 => #{colah($sample_pri, $alpha: 0.75)}';
+@debug '';
+*/
+/*
+//> colah-psa
+@debug '|> colah-psa <|';
+@debug 'primary, no args: #{colah($sample_pri)}';
+@debug '$color: primary, $swatch: 30 => #{colah($sample_pri, $swatch: 30)}';
+@debug '$color: primary, $alpha: 0.75 => #{colah($sample_pri, $alpha: 0.75)}';
+@debug '';
+*/
